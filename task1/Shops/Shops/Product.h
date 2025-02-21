@@ -15,7 +15,6 @@ public:
 	string getTitle() const { return title; }
 	int getId() const { return id; }
 
-	// Для сравнения продуктов
 	bool operator==(const Product& other) const {
 		return id == other.id;
 	}
