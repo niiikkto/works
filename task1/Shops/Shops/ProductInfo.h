@@ -1,5 +1,5 @@
 #pragma once
-#include "product.h"
+#include "Product.h"
 
 class ProductInfo {
 private:
@@ -8,21 +8,21 @@ private:
 	int quantity;
 
 public:
-	ProductInfo(const Product& product, double price, int quantity)
-		: product(product), price(price), quantity(quantity) {}
+	ProductInfo(const Product& product, double price, int quantity);
 
 	const Product& getProduct() const { return product; }
 	double getPrice() const { return price; }
 	int getQuantity() const { return quantity; }
 
-	void setPrice(double newPrice) { price = newPrice; }
-	void setQuantity(int newQuantity) { quantity = newQuantity; }
-
-	bool decreaseQuantity(int amount) {
-		if (quantity >= amount) {
-			quantity -= amount;
-			return true;
-		}
-		return false;
+	bool setPrice(double newPrice) { 
+		if (newPrice < 0) return false;
+		price = newPrice;
+		return true;
+	}
+	bool decreaseQuantity(int amount);
+	bool increaseQuantity(int amount) { 
+		if (amount < 0) return false;
+		quantity += amount;
+		return true;
 	}
 };

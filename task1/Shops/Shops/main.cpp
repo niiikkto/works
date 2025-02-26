@@ -1,4 +1,5 @@
-﻿#include "ShopManager.h"
+﻿#include <iostream>
+#include "ShopManager.h"
 #include "Shop.h"
 #include "Product.h"
 #include "ProductInfo.h"
@@ -6,47 +7,47 @@
 
 int main() {
     try {
-        // Создаем менеджер магазинов
         ShopManager manager;
 
-        // Создаем продукты
-        Product milk("Milk", 1);
-        Product bread("Bread", 2);
-
         // Создаем магазины
-        Shop shop1("Grocery");
-        shop1.addProduct(milk, 2.5, 10);
-        shop1.addProduct(bread, 1.5, 20);
+        Shop shop1("Продукты");
+        Shop shop2("Супермаркет");
 
-        Shop shop2("Supermarket");
-        shop2.addProduct(milk, 2.3, 15);
-        shop2.addProduct(bread, 1.7, 25);
+        // Создаем продукты
+        Product milk(1, "Молоко", 80.0, 50);
+        Product bread(2, "Хлеб", 50.0, 100);
+        Product cheese(3, "Сыр", 300.0, 30);
+
+        // Добавляем продукты в магазины
+        shop1.addProduct(milk, 80.0, 50);
+        shop1.addProduct(bread, 50.0, 100);
+        shop2.addProduct(milk, 85.0, 40);
+        shop2.addProduct(cheese, 320.0, 25);
 
         manager.addShop(shop1);
         manager.addShop(shop2);
 
         // Создаем покупателя
-        Buyer buyer("John");
-        buyer.addToBalance(100.0);
+        Buyer buyer("Иван", 1000.0);
 
-        // Находим самый дешевый магазин для молока
-        Shop* cheapestShop = manager.findCheapestShop(milk.getId());
-        if (cheapestShop) {
-            cout << "Cheapest shop for milk: " << cheapestShop->getName() << endl;
+        // Ищем самый дешевый магазин для молока
+        if (Shop* cheapestShop = manager.findCheapestShop(milk.getId())) {
+            std::cout << "Самый дешевый магазин для молока: " << cheapestShop->getName() << std::endl;
 
-            // Совершаем покупку
-            if (manager.processPurchase(buyer, milk.getId(), 1, *cheapestShop)) {
-                cout << "Successfully bought milk" << endl;
-                cout << "Remaining balance: " << buyer.getBalance() << endl;
-            }
-            else {
-                cout << "Failed to buy milk" << endl;
+            // Получаем информацию о товаре
+            if (ProductInfo* productInfo = cheapestShop->findProduct(milk.getId())) {
+                double cost = productInfo->getPrice() * 2; // цена за 2 единицы
+                if (buyer.pay(cost) && cheapestShop->sellProduct(milk.getId(), 2)) {
+                    std::cout << "Покупка успешно совершена!" << std::endl;
+                    std::cout << "Остаток на счете: " << buyer.getBalance() << " руб." << std::endl;
+                } else {
+                    std::cout << "Ошибка при совершении покупки." << std::endl;
+                }
             }
         }
 
-    }
-    catch (const exception& e) {
-        cerr << "Error: " << e.what() << endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Ошибка: " << e.what() << std::endl;
         return 1;
     }
 

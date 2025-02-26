@@ -1,40 +1,20 @@
 #pragma once
-#include <iostream>
+#include <string>
 #include <vector>
 #include "ProductInfo.h"
 
-using namespace std;
-
 class Shop {
 private:
-	string name;
-	vector<ProductInfo> products;
+    std::string name;
+    std::vector<ProductInfo> products;
 
 public:
-	Shop(const string& name) : name(name) {}
+    Shop(const std::string& name);
+    std::string getName() const { return name; }
 
-	string getName() const { return name; }
-
-	void addProduct(const Product& product, double price, int quantity) {
-		products.push_back(ProductInfo(product, price, quantity));
-	}
-
-	ProductInfo* findProduct(int productId) {
-		for (auto& productInfo : products) {
-			if (productInfo.getProduct().getId() == productId) {
-				return &productInfo;
-			}
-		}
-		return nullptr;
-	}
-
-	bool sellProduct(int productId, int quantity) {
-		ProductInfo* productInfo = findProduct(productId);
-		if (productInfo && productInfo->decreaseQuantity(quantity)) {
-			return true;
-		}
-		return false;
-	}
-
-	const vector<ProductInfo>& getProducts() const { return products; }
+    void addProduct(const Product& product, double price, int quantity);
+    void removeProduct(const std::string& name);
+    ProductInfo* findProduct(int productId);
+    bool sellProduct(int productId, int quantity);
+    const std::vector<ProductInfo>& getProducts() const { return products; }
 };
