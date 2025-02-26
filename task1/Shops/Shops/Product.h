@@ -13,6 +13,7 @@ public:
 		: id(id), title(title), price(price), quantity(quantity) {}
 	
 	int getId() const { return id; }
+<<<<<<< HEAD
 	std::string getTitle() const { return title; }
 	double getPrice() const { return price; }
 	int getQuantity() const { return quantity; }
@@ -21,6 +22,9 @@ public:
 	void setPrice(double price) { this->price = price; }
 	void setQuantity(int quantity) { this->quantity = quantity; }
 	
+=======
+
+>>>>>>> f911fcd526bc76b8180dd779282f65bbfa18c3ed
 	bool operator==(const Product& other) const {
 		return id == other.id;
 	}
